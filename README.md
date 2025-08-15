@@ -71,4 +71,4 @@ Selalu bertanggung jawab dan pahami risiko hukum penggunaan brute-force.
 
 ## Lisensi
 
-Dibuat dan dibagikan oleh Peju 3ncer. Bebas digunakan untuk pembelajaran dan pengujian legal.
+Dibuat dan dibagikan oleh *Peju3ncer*. Bebas digunakan untuk pembelajaran dan pengujian legal.
