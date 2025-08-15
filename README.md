@@ -34,7 +34,7 @@ Ini adalah suite alat untuk WordPress yang terdiri dari beberapa script Python u
 
 1. Jalankan `pass_combiner.py` untuk menghasilkan kombinasi sandi:
    ```bash
-   python3 wp_bruteforce.py
+   python3 pass_combiner.py
    ```
    Salin output dan simpan di wordlist.txt, atau gunakan file wordlist yang sudah ada.
    
