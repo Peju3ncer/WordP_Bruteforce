@@ -51,7 +51,7 @@ Ini adalah suite alat untuk WordPress yang terdiri dari beberapa script Python u
 - pass_combiner.py
    ```bash
    # 1. Get sitemap
-   sitemap_url = "https://targetexample.com/wp-sitemap.xml" <----(ganti dengan username target)
+   sitemap_url = "https://targetexample.com/wp-sitemap.xml" <----(ganti dengan url target)
    ```
 *caranya?* masukkan ini di terminal, contoh :
    ```
