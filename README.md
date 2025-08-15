@@ -42,7 +42,7 @@ Ini adalah suite alat untuk WordPress yang terdiri dari beberapa script Python u
    ```bash
    python3 wp_bruteforce.py
    ```
-3. Pastikan link target sudah di masukkan ke dalam kode setiap file **`(wp_bruteforce.py & pass_bruteforce.py)`** contoh :
+3. Pastikan link target sudah di masukkan ke dalam kode setiap file **`(wp_bruteforce.py & pass_combiner.py)`** contoh :
 - wp_bruteforce.py
    ```bash
    url = "https://targetexample.com/wp-login.php" <----(ganti dengan url target)
