@@ -1,4 +1,4 @@
-# WordPress Bruteforce Suite
+# WordPress Bruteforce
 
 **Versi:** 1.0  
 **Dibuat oleh:** Peju3ncer  
