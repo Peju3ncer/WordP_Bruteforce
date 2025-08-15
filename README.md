@@ -1,4 +1,4 @@
-# WordPress Bruteforce
+# WordP(Press) Bruteforce
 
 **Versi:** 1.0  
 **Dibuat oleh:** Peju3ncer  
