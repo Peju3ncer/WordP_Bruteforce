@@ -38,11 +38,7 @@ Ini adalah suite alat untuk WordPress yang terdiri dari beberapa script Python u
    ```
    Salin output dan simpan di wordlist.txt, atau gunakan file wordlist yang sudah ada.
    
-2. Jalankan wp_bruteforce.py untuk mencoba login ke website target:
-   ```bash
-   python3 wp_bruteforce.py
-   ```
-3. Pastikan link target sudah di masukkan ke dalam file **`(pass_combiner.py)`** contoh :
+2. Pastikan link target sudah di masukkan ke dalam file **`(pass_combiner.py)`** contoh :
 - `pass_combiner.py`
    ```bash
    sitemap_url = "https://targetexample.com/wp-sitemap.xml" <----(ganti dengan url target)
@@ -50,6 +46,10 @@ Ini adalah suite alat untuk WordPress yang terdiri dari beberapa script Python u
 *caranya?* masukkan ini di terminal, contoh :
    ```
 nano file.py
+   ```
+ 3. Jalankan wp_bruteforce.py untuk mencoba   login ke website target:
+   ```bash
+   python3 wp_bruteforce.py
    ```
    ---
 
