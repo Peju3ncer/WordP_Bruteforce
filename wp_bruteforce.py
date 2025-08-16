@@ -43,7 +43,7 @@ headers = {
 # 3. Create session with error handling    
 session = requests.Session()    
 try:    
-    session.get(url, headers=headers, timeout=10)    
+    session.get(url, headers=headers, timeout=30)    
 except requests.exceptions.RequestException as e:    
     print(f"[!] Failed to connect to {url}: {e}")    
     exit()    
@@ -65,7 +65,7 @@ with open(wordlist, "r") as file:
         # POST request with retry    
         for attempt in range(3):    
             try:    
-                response = session.post(url, data=data, headers=headers, timeout=10, allow_redirects=True)    
+                response = session.post(url, data=data, headers=headers, timeout=30, allow_redirects=True)    
                 break    
             except requests.exceptions.RequestException as e:    
                 print(f"[!] Connection error, attempt {attempt+1}: {e}")    
