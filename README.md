@@ -42,13 +42,8 @@ Ini adalah suite alat untuk WordPress yang terdiri dari beberapa script Python u
    ```bash
    python3 wp_bruteforce.py
    ```
-3. Pastikan link target sudah di masukkan ke dalam kode setiap file **`(wp_bruteforce.py & pass_combiner.py)`** contoh :
-- wp_bruteforce.py
-   ```bash
-   url = "https://targetexample.com/wp-login.php" <----(ganti dengan url target)
-   username = "admin" <----(ganti dengan username target)
-   ```
-- pass_combiner.py
+3. Pastikan link target sudah di masukkan ke dalam file **`(pass_combiner.py)`** contoh :
+- `pass_combiner.py`
    ```bash
    # 1. Get sitemap
    sitemap_url = "https://targetexample.com/wp-sitemap.xml" <----(ganti dengan url target)
