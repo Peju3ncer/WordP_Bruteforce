@@ -1,11 +1,13 @@
 import requests
 from xml.etree import ElementTree
 import random
+import time  # added for retry delay
 
 # Terminal color
 RED = "\033[31m"
 CYAN = "\033[36m"
 RESET = "\033[0m"
+
 # ===============================
 # ASCII Art Header
 print(RED + r"______________________________________________________________________________________________________" + RESET)
@@ -22,36 +24,78 @@ print(RED + r"__________________________________________________________________
 print(RED + r"/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/" + RESET)
 print("\n")  # space before password combination
 
-# 1. Get sitemap
+# ===============================
+# 1. Get sitemap with headers and retry
 sitemap_url = "https://targetexample.com/wp-sitemap.xml"
-response = requests.get(sitemap_url)
-xml_content = response.text
+headers = {"User-Agent": "Mozilla/5.0"}
+
+max_retries = 3
+for attempt in range(max_retries):
+    try:
+        response = requests.get(sitemap_url, headers=headers, timeout=10)  # added headers and timeout
+        response.raise_for_status()
+        break
+    except requests.exceptions.RequestException as e:
+        print(f"Attempt {attempt+1} failed: {e}")
+        if attempt < max_retries - 1:
+            time.sleep(2)  # wait before retry
+        else:
+            print("Failed to fetch sitemap, exiting.")
+            exit()
+
+# safely decode content
+xml_content = response.content.decode('utf-8', errors='ignore')
 
 namespaces = {'ns': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
-root = ElementTree.fromstring(xml_content)
 
-# 2. Get All URL
+try:
+    root = ElementTree.fromstring(xml_content)  # safer parse
+except ElementTree.ParseError as e:
+    print(f"XML Parse Error: {e}")
+    exit()
+
+# ===============================
+# 2. Get All URLs with safe retry
 urls = []
 if root.tag.endswith('urlset'):
     urls = [url.find('ns:loc', namespaces).text for url in root.findall('ns:url', namespaces)]
 elif root.tag.endswith('sitemapindex'):
     sitemap_links = [s.find('ns:loc', namespaces).text for s in root.findall('ns:sitemap', namespaces)]
     for sm in sitemap_links:
-        r = requests.get(sm)
-        sub_root = ElementTree.fromstring(r.text)
+        for attempt in range(max_retries):
+            try:
+                r = requests.get(sm, headers=headers, timeout=10)  # headers and timeout
+                r.raise_for_status()
+                break
+            except requests.exceptions.RequestException as e:
+                print(f"Sitemap {sm} attempt {attempt+1} failed: {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(2)
+                else:
+                    print(f"Skipping sitemap {sm}")
+                    r = None
+        if r is None:
+            continue
+        try:
+            sub_root = ElementTree.fromstring(r.content.decode('utf-8', errors='ignore'))
+        except ElementTree.ParseError as e:
+            print(f"Skipping sitemap {sm} due to XML error: {e}")
+            continue
         urls.extend([u.find('ns:loc', namespaces).text for u in sub_root.findall('ns:url', namespaces)])
 
-# 3. Extract words from URL
+# ===============================
+# 3. Extract words from URL with alphanumeric allowed
 words = set()
 for url in urls:
     parts = url.replace("https://", "").replace(".html", "").replace(".php", "").split("/")
     for part in parts:
         subparts = part.split("-")
         for w in subparts:
-            # filter the dominant word "cbt" so that it is not too dominant
-            if w.isalpha() and len(w) > 2 and not w.lower().startswith("cbt"):
+            # allow letters and numbers, ignore "cbt"
+            if w.isalnum() and len(w) > 2 and not w.lower().startswith("cbt"):
                 words.add(w.lower())
 
+# ===============================
 # 4. Variations for password combinations
 symbols = ["!", "@", "#", "$", "%", "&", "?"]
 numbers = ["123", "2025", "111", "007", "2024"]
@@ -59,7 +103,10 @@ extras = symbols + numbers
 
 words_list = list(words)
 random.shuffle(words_list)
+# limit words to 50 for terminal safety
+words_list = words_list[:50]
 
+# ===============================
 # 5. Show combination in terminal
 count = 0
 for w1 in words_list:
