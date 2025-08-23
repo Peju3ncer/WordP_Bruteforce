@@ -34,7 +34,7 @@ Meskipun penggunaan tools ini harus **bertanggung jawab**, semua fungsi telah di
    - Membutuhkan target URL dan wordlist sebagai input.  
    - Script ini membantu menguji kombinasi sandi potensial dengan kemungkinan berhasil, walau probabilitasnya kecil (~1:100000).  
 
-4. **`hidden_finder.go`** *(Fitur Baru)*  
+4. **`hidden_finder.go`** *(Fitur Baru)*
    - Fungsi: Mencari URL atau file tersembunyi pada website target, termasuk `wp-sitemap.xml` yang digunakan oleh `pass_combiner.py`.  
    - Cara kerja: mengecek sejumlah file/folder umum (admin.php, wp-login.php, robots.txt, dll.) dan menampilkan hasil yang valid di terminal.  
    - Fitur ini mempercepat proses pengumpulan URL penting sebelum menjalankan brute-force.  
@@ -45,42 +45,39 @@ Meskipun penggunaan tools ini harus **bertanggung jawab**, semua fungsi telah di
 
 1. Jalankan `hidden_finder.go` untuk menemukan URL tersembunyi (opsional tapi disarankan):
    ```bash
-   go build hidden_finder.go
+   go build hidden_finder.go <----(compile)
    ./hidden_finder
+   ```
+Jalankan binary → Masukkan URL target → script akan menampilkan semua file/folder yang ditemukan.
 
-Masukkan URL target → script akan menampilkan semua file/folder yang ditemukan.
-
-2. Jalankan pass_combiner.py untuk menghasilkan kombinasi sandi:
-
+2. Jalankan `pass_combiner.py` untuk menghasilkan kombinasi sandi:
+```
 python3 pass_combiner.py
-
+```
 Salin output dan simpan di wordlist.txt, atau gunakan file wordlist yang sudah ada.
 
-3. Jalankan wp_bruteforce.py untuk mencoba login ke website target:
-
+3. Jalankan `wp_bruteforce.py` untuk mencoba login ke website target:
+```
 python3 wp_bruteforce.py
-
+```
 4. Pastikan link target sudah dimasukkan di masing-masing script:
-
-wp_bruteforce.py
-
+`wp_bruteforce.py`
+```
 url = "https://targetexample.com/wp-login.php"  # ganti dengan URL target
 username = "admin"  # ganti dengan username target
-
-pass_combiner.py
-
+```
+`pass_combiner.py`
+```
 sitemap_url = "https://targetexample.com/wp-sitemap.xml"  # ganti dengan URL target
-
-hidden_finder.go → jalankan binary, masukkan URL target.
-
+```
 Caranya edit file di terminal:
-
+```
 nano file.py
-
+```
 
 ---
 
-Catatan Penting
+## Catatan Penting
 
 Tools ini hanya untuk edukasi dan pengujian keamanan sendiri.
 
@@ -90,7 +87,7 @@ Selalu bertanggung jawab dan pahami risiko hukum penggunaan brute-force.
 
 ---
 
-Lisensi
+## Lisensi
 
 Dibuat dan dibagikan oleh Peju3ncer. Bebas digunakan untuk pembelajaran dan pengujian legal.
 
