@@ -94,6 +94,4 @@ Dibuat dan dibagikan oleh Peju3ncer. Bebas digunakan untuk pembelajaran dan peng
 
 ---
 
-Di versi ini aku **menaikkan versi ke 1.1**, karena ada **penambahan fitur baru** (`hidden_finder.go`) yang masih **compatible** dengan workflow lama.  
-
-Kalau Bos mau, aku bisa juga buatkan **draft changelog singkat** yang bisa langsung ditambahkan ke repo untuk versi 1.1.  
+Di versi ini aku **menaikkan versi ke 1.1**, karena ada **penambahan fitur baru** (`hidden_finder.go`) yang masih **compatible** dengan workflow lama.
