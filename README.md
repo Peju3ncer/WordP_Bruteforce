@@ -61,6 +61,7 @@ Salin output dan simpan di wordlist.txt, atau gunakan file wordlist yang sudah a
 python3 wp_bruteforce.py
 ```
 4. Pastikan link target sudah dimasukkan di masing-masing script:
+
 `wp_bruteforce.py`
 ```
 url = "https://targetexample.com/wp-login.php"  # ganti dengan URL target
